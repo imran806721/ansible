@@ -1,15 +1,14 @@
-- name: even or odd
-  hosts: local
-  connection: local
-  vars:
-    given_number: 7
+- name: conditions using ansible_facts
+  hosts: frontend
   tasks:
-  - when: given_number % 2 == 0
+  - name: print if RedHat
     debug:
-      msg: "give number: {{ given_number }} is even"
-    name: is even
-    
-  - name: is odd
+      msg: "OS Family is RedHat, package manager is dnf"
+    when: ansible_facts.os_family == "RedHat"
+  
+  - name: print if Debian
     debug:
-      msg: "give number: {{ given_number }} is odd"
-    when: given_number % 2 != 0
+      msg: "OS Family is Debian, package manager is apt-get"
+    when: ansible_facts.os_family == "Debian"
+
+# ansible_facts is special reserved variable

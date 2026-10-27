@@ -1,53 +1,16 @@
-- name: demo on filters
+- name: demo on shell vs command
   hosts: local
   connection: local
-  vars:
-    topics: Linux, Shell, Ansible, Terraform
-    tagMap:
-      name: Ansible
-      project: roboshop
-      environment: dev
-    full_name: Sivakumar Reddy M
-    ip_address: 178.90.78.17
-    tagsList: [
-        {
-            "key": "name",
-            "value": "Ansible"
-        },
-        {
-            "key": "project",
-            "value": "roboshop"
-        },
-        {
-            "key": "environment",
-            "value": "dev"
-        }
-    ]
   tasks:
-  - name: convert string to list
-    debug:
-      msg: "Topics are: {{ topics | split(',') }}"
+  - name: command test
+    #command: cat /etc/passwd | grep root
+    shell: cat /etc/passwd | grep root
+    register: users_output
 
-  - name: set default value
+  - name: print output
     debug:
-      msg: "Hi {{ GREETING | default('Good Morning') }}"
+      msg: "{{ users_output }}"
 
-  - name: convert map to list
-    debug:
-      msg: "{{ tagMap | dict2items  }}"
-
-  - name: convert list to map
-    debug:
-      msg: "{{ tagsList | items2dict  }}"
-
-  - name: convert to uppercase
-    debug:
-      msg: "{{ full_name | upper }}"
-
-  - name: convert to lowercase
-    debug:
-      msg: "{{ full_name | lower }}"
-
-  - name: check ipv4 address
-    debug:
-      msg: "{{ ip_address | ansible.utils.ipv4 }}"
+  - name: list files
+    #command: ls -ltr > /tmp/files.txt
+    shell: ls -ltr > /tmp/files.txt
